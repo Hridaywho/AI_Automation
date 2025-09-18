@@ -55,6 +55,10 @@
   --topbar-height: 64px;
   --border-radius: 8px;
   --border-radius-lg: 12px;
+
+  /*special color*/
+  --n-color: rgb(5, 5, 57);
+  --bg-scroll:rgb(0, 0, 251);
 }
 
 /* Dark Theme */
@@ -72,6 +76,8 @@
   --primary-light: #1e40af;
   --secondary-light: #065f46;
   --accent-light: #92400e;
+  --n-color: rgb(6, 0, 19);
+  --bg-scroll:#0f172a;
 }
 
 /* Global Reset */
@@ -842,3 +848,29 @@ input:focus-visible {
   outline: 2px solid var(--primary);
   outline-offset: 2px;
 }
+
+
+/* Scrollbar styles */
+
+/* width of the scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* background (track) */
+::-webkit-scrollbar-track {
+  background-color: var(--bg-scroll) !important;  /* neon blue */
+  
+}
+
+/* the draggable part (thumb) */
+::-webkit-scrollbar-thumb {
+  background: var(--n-color); /* neon green */
+  border-radius: 10px;
+}
+
+/* hover effect (optional) */
+::-webkit-scrollbar-thumb:hover {
+  background: #00cc66;
+}
+ 
