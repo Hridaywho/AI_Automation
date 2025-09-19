@@ -57,8 +57,8 @@
   --border-radius-lg: 12px;
 
   /*special color*/
-  --n-color: rgb(5, 5, 57);
-  --bg-scroll:rgb(0, 0, 251);
+  --n-color: rgb(144, 144, 144);
+  --bg-scroll:rgb(255, 255, 255);
 }
 
 /* Dark Theme */
@@ -76,8 +76,8 @@
   --primary-light: #1e40af;
   --secondary-light: #065f46;
   --accent-light: #92400e;
-  --n-color: rgb(6, 0, 19);
-  --bg-scroll:#0f172a;
+  --n-color: rgb(11, 0, 35);
+  --bg-scroll:#000614;
 }
 
 /* Global Reset */
@@ -871,6 +871,6 @@ input:focus-visible {
 
 /* hover effect (optional) */
 ::-webkit-scrollbar-thumb:hover {
-  background: #00cc66;
+  background: #000326;
 }
  
