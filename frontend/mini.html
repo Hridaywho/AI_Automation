@@ -3,17 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AudiBook - Home</title>
+    <title>AudiBook - Book Mini Auditorium</title>
     <link rel="stylesheet" href="style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body data-theme="light">
-    <!-- Sidebar Overlay -->
     <div class="sidebar-overlay" id="sidebarOverlay"></div>
     
-    <!-- Sidebar Navigation -->
     <nav class="sidebar" id="sidebar">
         <div class="sidebar-header">
             <div class="logo">
@@ -27,9 +25,8 @@
                 </svg>
             </button>
         </div>
-        
         <div class="sidebar-menu">
-            <a href="index.html" class="menu-item active">
+            <a href="index.html" class="menu-item">
                 <svg class="menu-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M3 9L12 2L21 9V20C21 20.5304 20.7893 21.0391 20.4142 21.4142C20.0391 21.7893 19.5304 22 19 22H5C4.46957 22 3.96086 21.7893 3.58579 21.4142C3.21071 21.0391 3 20.5304 3 20V9Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                     <path d="M9 22V12H15V22" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -53,79 +50,75 @@
                 </svg>
                 <span>Settings</span>
             </a>
+            <a href="login.html" class="menu-item login-btn">
+                <svg class="menu-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M15 3H7C5.89543 3 5 3.89543 5 5V19C5 20.1046 5.89543 21 7 21H15M19 12L12 18M19 12L12 6M19 12H12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <span>Login</span>
+            </a>
         </div>
-        <a href="landing/login.html" class="menu-item login-btn">
-    <svg class="menu-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M15 3H7C5.89543 3 5 3.89543 5 5V19C5 20.1046 5.89543 21 7 21H15M19 12L12 18M19 12L12 6M19 12H12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-    </svg>
-    <span>Login</span>
-</a>
     </nav>
 
-    <!-- Main Content -->
     <main class="main-content">
-        <!-- Top Bar -->
         <header class="topbar">
             <button class="hamburger-btn" id="hamburgerBtn" aria-label="Open menu">
                 <span></span>
                 <span></span>
                 <span></span>
             </button>
-            <h1 class="page-title">Home</h1>
+            <h1 class="page-title">Book Mini Auditorium</h1>
         </header>
 
-        <!-- Home Content -->
         <div class="content">
-            <div class="hero-section">
-                <div class="hero-content">
-                    <div class="hero-icon">🎭</div>
-                    <h1 class="hero-title">Welcome to AudiBook</h1>
-                    <p class="hero-description">Book your college auditorium with ease. Choose from our main auditorium or mini auditorium for your events.</p>
+            <div class="booking-form-container fade-in">
+                <form class="booking-form" action="#" method="POST">
+                    <h2 class="form-title">Mini Auditorium Booking</h2>
+                    <p class="form-description">Please fill out the form to book the mini auditorium for your event.</p>
                     
-                    <div class="quick-actions">
-                        <a href="main.html" style="text-decoration: none;"><button class="action-btn primary" onclick=" ">
-                            <div class="btn-icon">🏛️</div>
-                            <div class="btn-content">
-                                <h3>Book Main Auditorium</h3>
-                                <p>Perfect for large events and performances</p>
-                            </div>
-                        </button></a>
-                        
-                        <a href="mini.html" style="text-decoration: none;"><button class="action-btn secondary" onclick=" ">
-                            <div class="btn-icon">🏢</div>
-                            <div class="btn-content">
-                                <h3>Book Mini Auditorium</h3>
-                                <p>Ideal for smaller gatherings and meetings</p>
-                            </div>
-                        </button></a>
+                    <div class="form-group">
+                        <label for="event-title">Event Title</label>
+                        <input type="text" id="event-title" name="event-title" placeholder="e.g. Department Meeting" required>
                     </div>
-                </div>
-            </div>
 
-            <!-- Features Section -->
-            <div class="features-section">
-                <h2 class="section-title">Why Choose AudiBook?</h2>
-                <div class="features-grid">
-                    <div class="feature-card">
-                        <div class="feature-icon">⚡</div>
-                        <h3>Quick Booking</h3>
-                        <p>Book auditoriums in seconds with our streamlined process</p>
+                    <div class="form-group">
+                        <label for="event-date">Date</label>
+                        <input type="date" id="event-date" name="event-date" required>
                     </div>
-                    <div class="feature-card">
-                        <div class="feature-icon">📅</div>
-                        <h3>Easy Scheduling</h3>
-                        <p>View availability and manage your bookings effortlessly</p>
+
+                    <div class="form-group">
+                        <label for="event-time">Time</label>
+                        <input type="time" id="event-time" name="event-time" required>
                     </div>
-                    <div class="feature-card">
-                        <div class="feature-icon">🔒</div>
-                        <h3>Secure Platform</h3>
-                        <p>Your bookings and data are safe with our secure system</p>
+                    
+                    <div class="form-group">
+                        <label for="department">Department</label>
+                        <select id="department" name="department" required>
+                            <option value="" disabled selected>Select Department</option>
+                            <option value="cs">Computer Science</option>
+                            <option value="ee">Electrical Engineering</option>
+                            <option value="me">Mechanical Engineering</option>
+                            <option value="ce">Civil Engineering</option>
+                            <option value="admin">Administration</option>
+                            <option value="other">Other</option>
+                        </select>
                     </div>
-                </div>
+
+                    <div class="form-group">
+                        <label for="status">Status</label>
+                        <select id="status" name="status" required>
+                            <option value="pending" selected>Pending</option>
+                            <option value="confirmed">Confirmed</option>
+                        </select>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn-submit">Submit Booking</button>
+                        <button type="reset" class="btn-cancel">Clear Form</button>
+                    </div>
+                </form>
             </div>
         </div>
     </main>
-
     <script src="script.js"></script>
 </body>
 </html>

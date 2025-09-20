@@ -3,11 +3,115 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>AudiBook - Login</title>
+    <link rel="stylesheet" href="landstyle.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
-<body>
-    <h1>Login here</h1>
-    <h5><a href="signup.html">signup</a></h5>
-    <h4><a href="landing.html">back to landing page</a></h4>
+<body data-theme="light" class="auth-page">
+    <!-- Theme Toggle -->
+    <div class="auth-theme-toggle">
+        
+    </div>
+
+    <!-- Main Content -->
+    <main class="auth-main">
+        <div class="auth-container">
+            <div class="auth-header">
+                <div class="auth-logo">
+                    <span class="auth-logo-icon">🎭</span>
+                    <h1 class="auth-logo-text">AudiBook</h1>
+                </div>
+                <h2 class="auth-title">Welcome Back</h2>
+                <p class="auth-subtitle">Sign in to your authorized account</p>
+            </div>
+
+            <form class="auth-form" id="loginForm">
+                <div class="form-group">
+                    <label for="email" class="form-label">Email Address</label>
+                    <input 
+                        type="email" 
+                        id="email" 
+                        name="email" 
+                        class="form-input" 
+                        placeholder="Enter your email"
+                        required
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="password" class="form-label">Password</label>
+                    <input 
+                        type="password" 
+                        id="password" 
+                        name="password" 
+                        class="form-input" 
+                        placeholder="Enter your password"
+                        required
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="authKey" class="form-label">Authorization Key</label>
+                    <input 
+                        type="password" 
+                        id="authKey" 
+                        name="authKey" 
+                        class="form-input" 
+                        placeholder="Enter authorization key"
+                        required
+                    >
+                    <small class="form-help">This key is provided by your institution</small>
+                </div>
+
+                <div class="auth-actions">
+                    <button type="submit" class="auth-btn primary">
+                        Sign In
+                    </button>
+                    
+                    <a href="../index.html" class="auth-btn secondary">
+                        Back to home
+                    </a>
+                </div>
+            </form>
+
+            <div class="auth-footer">
+                <p>Don't have an account? <a href="signup.html" class="auth-link">Sign up here</a></p>
+            </div>
+        </div>
+    </main>
+
+    <script src="script.js"></script>
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const authKey = document.getElementById('authKey').value;
+            
+            // Simple validation
+            if (!email || !password || !authKey) {
+                audiBookApp.showNotification('Please fill in all fields', 'error');
+                return;
+            }
+            
+            // Simulate login process
+            audiBookApp.showNotification('Verifying credentials...', 'info');
+            
+            setTimeout(() => {
+                // For demo purposes, accept any valid inputs
+                if (authKey.length >= 6) {
+                    audiBookApp.showNotification('Login successful! Redirecting...', 'success');
+                    setTimeout(() => {
+                        window.location.href = 'dashboard.html';
+                    }, 1500);
+                } else {
+                    audiBookApp.showNotification('Invalid authorization key. Please check and try again.', 'error');
+                }
+            }, 1500);
+        });
+    </script>
 </body>
 </html>

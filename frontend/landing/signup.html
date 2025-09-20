@@ -3,11 +3,149 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>AudiBook - Sign Up</title>
+    <link rel="stylesheet" href="landstyle.css">
+    <link rel="stylesheet" href="../style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
-<body>
-    <h1>sign up here</h1>
-    <h5><a href="login.html">login</a></h5>
-    <h4><a href="landing.html">back to landing page</a></h4>
+<body data-theme="light" class="auth-page">
+    
+    
+
+    <!-- Main Content -->
+    <main class="auth-main">
+        <div class="auth-container">
+            <div class="auth-header">
+                <div class="auth-logo">
+                    <span class="auth-logo-icon">🎭</span>
+                    <h1 class="auth-logo-text">AudiBook</h1>
+                </div>
+                <h2 class="auth-title">Create Account</h2>
+                <p class="auth-subtitle">Sign up for authorized access</p>
+            </div>
+
+            <form class="auth-form" id="signupForm">
+                <div class="form-group">
+                    <label for="email" class="form-label">Email Address</label>
+                    <input 
+                        type="email" 
+                        id="email" 
+                        name="email" 
+                        class="form-input" 
+                        placeholder="Enter your email"
+                        required
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="password" class="form-label">Password</label>
+                    <input 
+                        type="password" 
+                        id="password" 
+                        name="password" 
+                        class="form-input" 
+                        placeholder="Create a password"
+                        minlength="6"
+                        required
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="confirmPassword" class="form-label">Confirm Password</label>
+                    <input 
+                        type="password" 
+                        id="confirmPassword" 
+                        name="confirmPassword" 
+                        class="form-input" 
+                        placeholder="Confirm your password"
+                        required
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="authKey" class="form-label">Authorization Key</label>
+                    <input 
+                        type="password" 
+                        id="authKey" 
+                        name="authKey" 
+                        class="form-input" 
+                        placeholder="Enter authorization key"
+                        required
+                    >
+                    <small class="form-help">Contact your administrator to obtain this key</small>
+                </div>
+
+                <div class="form-group">
+                    <label for="role" class="form-label">Role</label>
+                    <select id="role" name="role" class="form-input" required>
+                        <option value="">Select your role</option>
+                        <option value="teacher">Teacher</option>
+                        <option value="admin">Administrator</option>
+                        <option value="staff">Staff Member</option>
+                    </select>
+                </div>
+
+                <div class="auth-actions">
+                    <button type="submit" class="auth-btn primary">
+                        Create Account
+                    </button>
+                    
+                    <a href="../index.html" class="auth-btn secondary">
+                        Back to home
+                    </a>
+                </div>
+            </form>
+
+            <div class="auth-footer">
+                <p>Already have an account? <a href="login.html" class="auth-link">Sign in here</a></p>
+            </div>
+        </div>
+    </main>
+
+    <script src="script.js"></script>
+    <script>
+        document.getElementById('signupForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            const authKey = document.getElementById('authKey').value;
+            const role = document.getElementById('role').value;
+            
+            // Validation
+            if (!email || !password || !confirmPassword || !authKey || !role) {
+                audiBookApp.showNotification('Please fill in all fields', 'error');
+                return;
+            }
+            
+            if (password !== confirmPassword) {
+                audiBookApp.showNotification('Passwords do not match', 'error');
+                return;
+            }
+            
+            if (password.length < 6) {
+                audiBookApp.showNotification('Password must be at least 6 characters long', 'error');
+                return;
+            }
+            
+            // Simulate signup process
+            audiBookApp.showNotification('Creating your account...', 'info');
+            
+            setTimeout(() => {
+                // For demo purposes, accept any valid inputs
+                if (authKey.length >= 6) {
+                    audiBookApp.showNotification('Account created successfully! Please sign in.', 'success');
+                    setTimeout(() => {
+                        window.location.href = 'login.html';
+                    }, 1500);
+                } else {
+                    audiBookApp.showNotification('Invalid authorization key. Please contact your administrator.', 'error');
+                }
+            }, 1500);
+        });
+    </script>
 </body>
 </html>
