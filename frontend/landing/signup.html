@@ -26,6 +26,7 @@
                 <p class="auth-subtitle">Sign up for authorized access</p>
             </div>
 
+            <!-- Form starts -->
             <form class="auth-form" id="signupForm">
                 <div class="form-group">
                     <label for="email" class="form-label">Email Address</label>
@@ -97,6 +98,10 @@
                     </a>
                 </div>
             </form>
+            <!--Forms ends-->
+
+
+
 
             <div class="auth-footer">
                 <p>Already have an account? <a href="login.html" class="auth-link">Sign in here</a></p>
@@ -105,47 +110,52 @@
     </main>
 
     <script src="script.js"></script>
-    <script>
-        document.getElementById('signupForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-            const confirmPassword = document.getElementById('confirmPassword').value;
-            const authKey = document.getElementById('authKey').value;
-            const role = document.getElementById('role').value;
-            
-            // Validation
-            if (!email || !password || !confirmPassword || !authKey || !role) {
-                audiBookApp.showNotification('Please fill in all fields', 'error');
-                return;
-            }
-            
-            if (password !== confirmPassword) {
-                audiBookApp.showNotification('Passwords do not match', 'error');
-                return;
-            }
-            
-            if (password.length < 6) {
-                audiBookApp.showNotification('Password must be at least 6 characters long', 'error');
-                return;
-            }
-            
-            // Simulate signup process
-            audiBookApp.showNotification('Creating your account...', 'info');
-            
-            setTimeout(() => {
-                // For demo purposes, accept any valid inputs
-                if (authKey.length >= 6) {
-                    audiBookApp.showNotification('Account created successfully! Please sign in.', 'success');
-                    setTimeout(() => {
-                        window.location.href = 'login.html';
-                    }, 1500);
-                } else {
-                    audiBookApp.showNotification('Invalid authorization key. Please contact your administrator.', 'error');
-                }
-            }, 1500);
-        });
-    </script>
+    <script src="auth.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+ <!--Signup block starts-->   
+<script>
+document.getElementById('signupForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+
+  // Collect form values
+  const email = document.getElementById('email').value.trim();
+  const password = document.getElementById('password').value.trim();
+  const confirmPassword = document.getElementById('confirmPassword').value.trim();
+  const role = document.getElementById('role').value;
+
+  // Validate
+  if (!email || !password || !confirmPassword || !role) {
+    alert("Please fill all fields");
+    return;
+  }
+  if (password !== confirmPassword) {
+    alert("Passwords do not match");
+    return;
+  }
+  if (password.length < 6) {
+    alert("Password must be at least 6 characters");
+    return;
+  }
+
+  // Call Supabase Auth
+  const { data, error } = await supabaseClient.auth.signUp({
+    email,
+    password,
+    options: {
+      data: { role: role } // stores role in metadata
+    }
+  });
+
+  if (error) {
+    alert("Signup failed: " + error.message);
+  } else {
+    alert("Signup successful! Please check your email to confirm.");
+    // Redirect to login page after short delay
+    setTimeout(() => window.location.href = "../index.html", 1500);
+  }
+});
+</script>
+<!--signup block ends-->
 </body>
 </html>

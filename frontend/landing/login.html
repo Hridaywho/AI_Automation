@@ -83,35 +83,60 @@
     </main>
 
     <script src="script.js"></script>
-    <script>
-        document.getElementById('loginForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-            const authKey = document.getElementById('authKey').value;
-            
-            // Simple validation
-            if (!email || !password || !authKey) {
-                audiBookApp.showNotification('Please fill in all fields', 'error');
-                return;
-            }
-            
-            // Simulate login process
-            audiBookApp.showNotification('Verifying credentials...', 'info');
-            
-            setTimeout(() => {
-                // For demo purposes, accept any valid inputs
-                if (authKey.length >= 6) {
-                    audiBookApp.showNotification('Login successful! Redirecting...', 'success');
-                    setTimeout(() => {
-                        window.location.href = 'dashboard.html';
-                    }, 1500);
-                } else {
-                    audiBookApp.showNotification('Invalid authorization key. Please check and try again.', 'error');
-                }
-            }, 1500);
-        });
-    </script>
+<script>
+   
+document.getElementById('signupForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    
+    const email = document.getElementById('email').value.trim();
+    const password = document.getElementById('password').value.trim();
+    const confirmPassword = document.getElementById('confirmPassword').value.trim();
+    const authKey = document.getElementById('authKey').value.trim();
+    const role = document.getElementById('role').value;
+
+    // 1. Basic validation
+    if (!email || !password || !confirmPassword || !authKey || !role) {
+        audiBookApp.showNotification('Please fill in all fields', 'error');
+        return;
+    }
+    if (password !== confirmPassword) {
+        audiBookApp.showNotification('Passwords do not match', 'error');
+        return;
+    }
+    if (password.length < 6) {
+        audiBookApp.showNotification('Password must be at least 6 characters long', 'error');
+        return;
+    }
+
+    // 2. Check authorization key (replace "SECRET123" with your real key)
+    const validAuthKey = "SECRET123";
+    if (authKey !== validAuthKey) {
+        audiBookApp.showNotification('Invalid authorization key. Please contact your administrator.', 'error');
+        return;
+    }
+
+    // 3. Call Supabase Auth API
+    audiBookApp.showNotification('Creating your account...', 'info');
+    
+    const { data, error } = await supabaseClient.auth.signUp({
+        email: email,
+        password: password,
+        options: {
+            data: { role: role }   // store extra info in metadata
+        }
+    });
+
+    if (error) {
+        audiBookApp.showNotification('Signup failed: ' + error.message, 'error');
+    } else {
+        audiBookApp.showNotification('Account created successfully! Please check your email.', 'success');
+        setTimeout(() => {
+            window.location.href = 'login.html';
+        }, 1500);
+    }
+});
+</script>
+
+ 
 </body>
 </html>
