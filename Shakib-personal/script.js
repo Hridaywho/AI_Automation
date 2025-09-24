@@ -334,4 +334,4 @@ window.addEventListener('error', (e) => {
 // Export for testing purposes (if needed)
 if (typeof module !== 'undefined' && module.exports) {
   module.exports = { AudiBookApp };
-}
+};

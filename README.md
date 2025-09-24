@@ -42,10 +42,16 @@ It is built with **HTML, CSS, and JavaScript (just frontend)**.
 - **Settings**
   ![Settings Screenshot](img/settings.png)
 
-- **side navbar**
-  ![Sidebar Screenshot](img/sidebar.png)
+- **sidebar (before auth)**
+  ![Sidebar Screenshot](img/sidebarbeforeauth.png)
 
+- **sidebar (After auth)**
+  ![Sidebar screenshot](img/sidebarafterauth.png) 
 
+---
+# Last Commit
+
+![Last Commit](https://img.shields.io/github/last-commit/Hridaywho/AI_Automation?style=for-the-badge)
 
 
 ---

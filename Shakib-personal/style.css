@@ -192,19 +192,38 @@ body {
 }
 
 /* New: Login Button at the Bottom */
+/* Sidebar Login Button (Call-to-Action) */
 .login-btn {
-  margin-top: 350px; /* Pushes the button to the bottom */
-  border-top: 1px solid var(--border-color); /* Adds a separator line */
-  padding-top: var(--space-4); /* Adds space above the line */
-  padding-bottom: var(--space-4); /* Adds space below the button */
-  background-color: var(--lgn-bg);
+  /* Use flex positioning to ensure it's at the bottom */
+  margin-top: auto; 
+  
+  /* Resetting it to a normal menu item presentation, but with bold styling */
+  padding: var(--space-4) var(--space-6);
+  border-left: 3px solid transparent; /* Keeps the active indicator area */
+  
+  /* Key styling for CTA look */
+  background-color: var(--primary); /* Primary color background */
+  color: white !important; /* White text for contrast */
+  font-weight: 600; /* Bolder text */
+  box-shadow: 0 4px 10px var(--shadow); /* Subtle shadow for lift */
+  transition: all 0.2s ease, box-shadow 0.3s ease;
+  
+  /* Remove separator from the top if it's the CTA button */
+  border-top: none; 
 }
 
-/* Adjustments for the login button's hover state to match the theme */
+/* Hover state for the CTA button */
 .login-btn:hover {
-  color: var(--text-primary);
-  background-color: var(--bg-tertiary);
-  border-left-color: var(--primary);
+  background-color: var(--primary-hover); /* Darker shade on hover */
+  color: white !important; /* Keep text white */
+  border-left-color: var(--primary-hover); /* Match border to hover color */
+  transform: translateY(-1px); /* Slight lift effect */
+  box-shadow: 0 6px 15px var(--shadow-hover); /* More pronounced shadow on hover */
+}
+
+/* Style the icon for the dark background */
+.login-btn .menu-icon {
+  color: white; 
 }
 
 
@@ -1013,4 +1032,62 @@ input:focus-visible {
   .form-actions {
     flex-direction: column;
   }
+}
+/* Sidebar Authenticated User Profile */
+.user-profile-card {
+  border-top: 1px solid var(--border-color); /* Adds a separator line */
+  padding: var(--space-4) var(--space-6); /* Padding around content */
+  margin-top: auto; /* IMPORTANT: Pushes the element to the bottom */
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3); /* Space between name and button */
+  background-color: var(--bg-primary); /* Base color for the card */
+}
+
+.profile-info {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  font-size: var(--font-size-base);
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+.profile-icon {
+  font-size: var(--font-size-xl);
+  color: var(--primary); /* Use brand color for icon */
+  flex-shrink: 0; /* Prevents icon from shrinking */
+}
+
+.profile-email {
+  /* Use text-primary for the name/email */
+  color: var(--text-primary);
+  /* Ensure text doesn't overflow */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Logout button styling to match action buttons */
+#logout-btn {
+  width: 100%;
+  padding: var(--space-3) var(--space-4);
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  border: 1px solid var(--border-color);
+  background-color: var(--bg-secondary);
+  color: var(--text-secondary);
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+}
+
+#logout-btn:hover {
+  background-color: var(--error);
+  border-color: var(--error);
+  color: white;
 }
