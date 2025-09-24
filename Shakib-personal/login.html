@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AudiBook - Login</title>
+    <link rel="stylesheet" href="landstyle.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+     <script type="module">
+import { supabase } from './supabaseClient.js'
+
+async function checkAuthRedirect() {
+  const { data: { session } } = await supabase.auth.getSession()
+  if (session?.user) {
+    // If user is already logged in, redirect to index.html
+    window.location.href = 'index.html'
+  }
+}
+
+checkAuthRedirect()
+</script>
+</head>
+<body data-theme="light" class="auth-page">
+    <!-- Theme Toggle -->
+    <div class="auth-theme-toggle">
+        
+    </div>
+
+    <!-- Main Content -->
+    <main class="auth-main">
+        <div class="auth-container">
+            <div class="auth-header">
+                <div class="auth-logo">
+                    <span class="auth-logo-icon">🎭</span>
+                    <h1 class="auth-logo-text">AudiBook</h1>
+                </div>
+                <h2 class="auth-title">Welcome Back</h2>
+                <p class="auth-subtitle">Sign in to your authorized account</p>
+            </div>
+
+            <form class="auth-form" id="login-form">
+                <div class="form-group">
+                    <label for="email" class="form-label">Email Address</label>
+                    <input 
+                        type="email" 
+                        id="email" 
+                        name="email" 
+                        class="form-input" 
+                        placeholder="Enter your email"
+                        required
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="password" class="form-label">Password</label>
+                    <input 
+                        type="password" 
+                        id="password" 
+                        name="password" 
+                        class="form-input" 
+                        placeholder="Enter your password"
+                        required
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="authKey" class="form-label">Authorization Key</label>
+                    <input 
+                        type="text" 
+                        id="auth_key" 
+                        name="auth_key" 
+                        class="form-input" 
+                        placeholder="Enter authorization key"
+                        required
+                    >
+                    <small class="form-help">This key is provided by your institution</small>
+                </div>
+
+                <div class="auth-actions">
+                    <button type="submit" class="auth-btn primary">
+                        Sign In
+                    </button>
+                    
+                    <a href="index.html" class="auth-btn secondary">
+                        Back to home
+                    </a>
+                </div>
+            </form>
+            <div id="message" class="msg"></div>
+
+            <div class="auth-footer">
+                <p>Don't have an account? <a href="signup.html" class="auth-link">Sign up here</a></p>
+            </div>
+        </div>
+    </main>
+
+    <script src="script.js"></script>
+<script type="module">
+    import { supabase } from './supabaseClient.js'
+
+    const form = document.getElementById('login-form')
+    const msg = document.getElementById('message')
+
+    function showMessage(text, type='success') {
+      msg.innerText = text
+      msg.className = `msg ${type}`
+      msg.style.display = 'block'
+    }
+
+    form.addEventListener('submit', async e => {
+  e.preventDefault()
+  msg.style.display = 'none'
+
+  const formData = new FormData(form)
+  const email = formData.get('email')?.trim()
+  const password = formData.get('password')
+  const auth_key = formData.get('auth_key')?.trim()
+
+  // Check Authorization Key
+  if (auth_key !== '12345') {
+    return showMessage('Invalid Authorization Key!', 'error')
+  }
+
+  const { data, error } = await supabase.auth.signInWithPassword({ email, password })
+  if (error) return showMessage(error.message, 'error')
+
+  showMessage('Login successful!', 'success')
+  window.location.href = 'index.html'
+})
+
+  </script>
+
+ 
+</body>
+</html>

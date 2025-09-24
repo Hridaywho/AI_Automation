@@ -54,12 +54,17 @@
                 <span>Settings</span>
             </a>
         </div>
-        <a href="landing/login.html" class="menu-item login-btn">
+        <a id="before-auth" onclick="location.href='login.html'" class="menu-item login-btn">
     <svg class="menu-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M15 3H7C5.89543 3 5 3.89543 5 5V19C5 20.1046 5.89543 21 7 21H15M19 12L12 18M19 12L12 6M19 12H12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
     </svg>
     <span>Login</span>
 </a>
+
+  <div id="after-auth" style="display:none;">
+    <h1>Welcome, <span id="user-email"></span></h1>
+    <button id="logout-btn">Logout</button>
+  </div>
     </nav>
 
     <!-- Main Content -->
@@ -127,5 +132,33 @@
     </main>
 
     <script src="script.js"></script>
+    <script type="module">
+    import { supabase } from './supabaseClient.js'
+
+    async function checkAuth() {
+      const { data: { session } } = await supabase.auth.getSession()
+
+      if (session?.user) {
+        document.getElementById('before-auth').style.display = 'none'
+        document.getElementById('after-auth').style.display = 'block'
+        document.getElementById('user-email').innerText = session.user.email
+      } else {
+        document.getElementById('before-auth').style.display = 'block'
+        document.getElementById('after-auth').style.display = 'none'
+      }
+    }
+
+    checkAuth()
+
+    document.getElementById('logout-btn').addEventListener('click', async () => {
+      await supabase.auth.signOut()
+      checkAuth()
+    })
+
+    // Optional: listen to auth state changes (keeps UI in sync)
+    supabase.auth.onAuthStateChange((_event, session) => {
+      checkAuth()
+    })
+  </script>
 </body>
 </html>
