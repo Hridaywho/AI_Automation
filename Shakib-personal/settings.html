@@ -214,8 +214,37 @@
     </main>
 
     <script src="script.js"></script>
-    <script type="module">
+      <script type="module">
     import { supabase } from './supabaseClient.js'
+
+    // new element starts:
+
+    const mainLink = document.getElementById('main-auditorium-link');
+    const miniLink = document.getElementById('mini-auditorium-link');
+    const protectedLinks = [mainLink, miniLink].filter(n => n); // Get both links
+
+    const UNAUTHORIZED_MESSAGE = 'Please sign in to book an auditorium.';
+    const ORIGINAL_HREFS = {
+        'main-auditorium-link': mainLink ? mainLink.href : '',
+        'mini-auditorium-link': miniLink ? miniLink.href : ''
+    };
+
+    // Function to show a custom modal instead of browser alert
+    function handleUnauthorizedClick(event) {
+        event.preventDefault(); // Stop navigation
+        const modal = document.getElementById('custom-alert');
+        modal.classList.add('show');
+    }
+
+    // Close modal
+    document.getElementById('close-custom-alert')?.addEventListener('click', () => {
+        document.getElementById('custom-alert').classList.remove('show');
+    });
+
+    // Go to login
+    document.getElementById('go-login')?.addEventListener('click', () => {
+        window.location.href = 'login.html';
+    });
 
     async function checkAuth() {
       const { data: { session } } = await supabase.auth.getSession()
@@ -223,27 +252,90 @@
       if (session?.user) {
         document.getElementById('before-auth').style.display = 'none'
         document.getElementById('after-auth').style.display = 'block'
-       // Prefer full_name from metadata, fallback to email
-const fullName = session.user.user_metadata.full_name
-document.getElementById('user-email').innerText = fullName || session.user.email
+        // Prefer full_name from metadata, fallback to email
+        const fullName = session.user.user_metadata.full_name
+        document.getElementById('user-email').innerText = fullName || session.user.email
+        // clickable form (login required)
 
+        protectedLinks.forEach(link => {
+            // Restore the original href
+            link.href = ORIGINAL_HREFS[link.id];
+            // Remove the click handler for the unauthorized message
+            link.removeEventListener('click', handleUnauthorizedClick);
+            // Optional: Remove a visual cue for being "disabled"
+            link.classList.remove('link-unauthorized'); 
+        });
       } else {
         document.getElementById('before-auth').style.display = 'block'
         document.getElementById('after-auth').style.display = 'none'
+
+        // Disable protected links
+        protectedLinks.forEach(link => {
+            // Remove the href attribute to prevent navigation
+            link.removeAttribute('href');
+            // Add the click handler to show the unauthorized message
+            link.addEventListener('click', handleUnauthorizedClick);
+            // Optional: Add a class to dim the button slightly (you'll need to define this in style.css)
+            link.classList.add('link-unauthorized');
+        });
       }
     }
 
     checkAuth()
 
-    document.getElementById('logout-btn').addEventListener('click', async () => {
-      await supabase.auth.signOut()
-      checkAuth()
-    })
+//    document.getElementById('logout-btn').addEventListener('click', async () => {
+//      await supabase.auth.signOut()
+//      checkAuth()
+//    })
+
+// Show logout confirmation modal instead of logging out immediately
+document.getElementById('logout-btn').addEventListener('click', (e) => {
+  e.preventDefault();
+  document.getElementById('logout-modal').classList.add('show');
+});
+
+// Handle confirm logout
+document.getElementById('confirm-logout')?.addEventListener('click', async () => {
+  await supabase.auth.signOut();
+  document.getElementById('logout-modal').classList.remove('show');
+  checkAuth();
+});
+
+// Handle cancel logout
+document.getElementById('cancel-logout')?.addEventListener('click', () => {
+  document.getElementById('logout-modal').classList.remove('show');
+});
+
 
     // Optional: listen to auth state changes (keeps UI in sync)
     supabase.auth.onAuthStateChange((_event, session) => {
       checkAuth()
     })
-  </script>
+
+
+</script>
+
+
+<!-- Alert pop up models -->
+
+<!--for booking alert before login-->
+<div id="custom-alert" class="custom-modal-overlay">
+  <div class="custom-modal">
+    <p>It requires login for bookings.</p>
+    <button id="go-login">Login</button>
+    <button id="close-custom-alert">Close</button>
+  </div>
+</div>
+
+<!--for logout alert before logging out-->
+<!-- Logout Confirmation Modal -->
+<div id="logout-modal" class="custom-modal-overlay">
+  <div class="custom-modal">
+    <p>Are you sure you want to logout?</p>
+    <button id="confirm-logout">Confirm</button>
+    <button id="cancel-logout">Cancel</button>
+  </div>
+</div>
+
 </body>
 </html>
