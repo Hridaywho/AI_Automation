@@ -57,7 +57,7 @@
 
 
 
-
+    <!--Login starts-->
        <a href="login.html" id="before-auth" class="menu-item login-btn">
     <svg class="menu-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M15 3H7C5.89543 3 5 3.89543 5 5V19C5 20.1046 5.89543 21 7 21H15M19 12L12 18M19 12L12 6M19 12H12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -76,6 +76,7 @@
         Logout
     </button>
 </div>
+<!--login ends-->
     </nav>
 
     <!-- Main Content -->
@@ -99,22 +100,26 @@
                     <p class="hero-description">Book your college auditorium with ease. Choose from our main auditorium or mini auditorium for your events.</p>
                     
                     <div class="quick-actions">
-                        <a href="main.html" style="text-decoration: none;"><button class="action-btn primary" onclick=" ">
-                            <div class="btn-icon">🏛️</div>
-                            <div class="btn-content">
-                                <h3>Book Main Auditorium</h3>
-                                <p>Perfect for large events and performances</p>
-                            </div>
-                        </button></a>
-                        
-                        <a href="mini.html" style="text-decoration: none;"><button class="action-btn secondary" onclick=" ">
-                            <div class="btn-icon">🏢</div>
-                            <div class="btn-content">
-                                <h3>Book Mini Auditorium</h3>
-                                <p>Ideal for smaller gatherings and meetings</p>
-                            </div>
-                        </button></a>
-                    </div>
+    <a href="main.html" id="main-auditorium-link" style="text-decoration: none;">
+        <button class="action-btn primary" onclick=" ">
+            <div class="btn-icon">🏛️</div>
+            <div class="btn-content">
+                <h3>Book Main Auditorium</h3>
+                <p>Perfect for large events and performances</p>
+            </div>
+        </button>
+    </a>
+    
+    <a href="mini.html" id="mini-auditorium-link" style="text-decoration: none;">
+        <button class="action-btn secondary" onclick=" ">
+            <div class="btn-icon">🏢</div>
+            <div class="btn-content">
+                <h3>Book Mini Auditorium</h3>
+                <p>Ideal for smaller gatherings and meetings</p>
+            </div>
+        </button>
+    </a>
+</div>
                 </div>
             </div>
 
@@ -142,10 +147,43 @@
         </div>
     </main>
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     <script src="script.js"></script>
     <script type="module">
     import { supabase } from './supabaseClient.js'
 
+        // new element starts:
+
+    const mainLink = document.getElementById('main-auditorium-link');
+    const miniLink = document.getElementById('mini-auditorium-link');
+    const protectedLinks = [mainLink, miniLink].filter(n => n); // Get both links
+
+    const UNAUTHORIZED_MESSAGE = 'Please sign in to book an auditorium.';
+    const ORIGINAL_HREFS = {
+        'main-auditorium-link': mainLink ? mainLink.href : '',
+        'mini-auditorium-link': miniLink ? miniLink.href : ''
+    };
+
+    // Function to show a message if a user clicks an unauthorized link
+    function handleUnauthorizedClick(event) {
+        event.preventDefault(); // Stop navigation
+        alert(UNAUTHORIZED_MESSAGE);
+    }
     async function checkAuth() {
       const { data: { session } } = await supabase.auth.getSession()
 
@@ -153,12 +191,31 @@
         document.getElementById('before-auth').style.display = 'none'
         document.getElementById('after-auth').style.display = 'block'
        // Prefer full_name from metadata, fallback to email
-const fullName = session.user.user_metadata.full_name
-document.getElementById('user-email').innerText = fullName || session.user.email
+        const fullName = session.user.user_metadata.full_name
+        document.getElementById('user-email').innerText = fullName || session.user.email
+        // clickable form (login required)
 
-      } else {
+         protectedLinks.forEach(link => {
+            // Restore the original href
+            link.href = ORIGINAL_HREFS[link.id];
+            // Remove the click handler for the unauthorized message
+            link.removeEventListener('click', handleUnauthorizedClick);
+            // Optional: Remove a visual cue for being "disabled"
+            link.classList.remove('link-unauthorized'); 
+        });
+    } else {
         document.getElementById('before-auth').style.display = 'block'
         document.getElementById('after-auth').style.display = 'none'
+
+         // Disable protected links
+        protectedLinks.forEach(link => {
+            // Remove the href attribute to prevent navigation
+            link.removeAttribute('href');
+            // Add the click handler to show the unauthorized message
+            link.addEventListener('click', handleUnauthorizedClick);
+            // Optional: Add a class to dim the button slightly (you'll need to define this in style.css)
+            link.classList.add('link-unauthorized');
+        });
       }
     }
 
@@ -172,8 +229,9 @@ document.getElementById('user-email').innerText = fullName || session.user.email
     // Optional: listen to auth state changes (keeps UI in sync)
     supabase.auth.onAuthStateChange((_event, session) => {
       checkAuth()
+    
     })
+
   </script>
-  <script src="authcheck.js"></script>
 </body>
 </html>
